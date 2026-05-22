@@ -13,17 +13,18 @@ struct ContentView: View {
     @State private var score = 0
     @State private var questionCount = 0
     @State private var showingFinal = false
+    @State private var selectedFlag = -1
     
     @State private var countries = ["Estonia", "France", "Germany", "Ireland", "Italy", "Nigeria", "Poland", "Spain", "UK", "US"].shuffled()
     @State private var correctAnswer = Int.random(in: 0...2)
-
+    
     var body: some View {
         ZStack {
             RadialGradient(stops: [
                 .init(color: Color(red: 0.1, green: 0.2, blue: 0.45), location: 0.3),
                 .init(color: Color(red: 0.76, green: 0.15, blue: 0.26), location: 0.3),
             ], center: .top, startRadius: 200, endRadius: 400)
-                .ignoresSafeArea()
+            .ignoresSafeArea()
             
             VStack {
                 Text("Guess the Flag")
@@ -44,9 +45,23 @@ struct ContentView: View {
                     
                     ForEach(0..<3) { number in
                         Button {
+                            withAnimation {
+                                selectedFlag = number
+                            }
+                            
                             flagTapped(number)
                         } label: {
                             FlagImage(countryName: countries[number])
+                                .rotation3DEffect(
+                                    .degrees(selectedFlag == number ? 360 : 0 ),
+                                    axis: (x: 0, y: 1, z: 0)
+                                )
+                                .opacity(
+                                    selectedFlag == number || selectedFlag == -1 ? 1.0 : 0.25
+                                )
+                                .scaleEffect(
+                                    selectedFlag == number || selectedFlag == -1 ? 1.0 : 0.8
+                                )
                         }
                     }
                 }
@@ -99,6 +114,7 @@ struct ContentView: View {
     private func askQuestion() {
         countries.shuffle()
         correctAnswer = Int.random(in: 0...2)
+        selectedFlag = -1
     }
     
     private func restartQuestion() {
