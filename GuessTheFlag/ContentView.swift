@@ -8,15 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var showingScore = false
-    @State private var scoreTitle = ""
-    @State private var score = 0
-    @State private var questionCount = 0
-    @State private var showingFinal = false
-    @State private var selectedFlag = -1
-    
-    @State private var countries = ["Estonia", "France", "Germany", "Ireland", "Italy", "Nigeria", "Poland", "Spain", "UK", "US"].shuffled()
-    @State private var correctAnswer = Int.random(in: 0...2)
+    @StateObject private var viewModel = GuessTheFlagViewModel()
     
     var body: some View {
         ZStack {
@@ -39,28 +31,28 @@ struct ContentView: View {
                             .foregroundStyle(.secondary)
                             .font(.subheadline.weight(.heavy))
                         
-                        Text(countries[correctAnswer])
+                        Text(viewModel.countries[viewModel.correctAnswer])
                             .font(.largeTitle.weight(.semibold))
                     }
                     
                     ForEach(0..<3) { number in
                         Button {
                             withAnimation {
-                                selectedFlag = number
+                                viewModel.selectedFlag = number
                             }
                             
-                            flagTapped(number)
+                            viewModel.flagTapped(number)
                         } label: {
-                            FlagImage(countryName: countries[number])
+                            FlagImage(countryName: viewModel.countries[number])
                                 .rotation3DEffect(
-                                    .degrees(selectedFlag == number ? 360 : 0 ),
+                                    .degrees(viewModel.selectedFlag == number ? 360 : 0 ),
                                     axis: (x: 0, y: 1, z: 0)
                                 )
                                 .opacity(
-                                    selectedFlag == number || selectedFlag == -1 ? 1.0 : 0.25
+                                    viewModel.selectedFlag == number || viewModel.selectedFlag == -1 ? 1.0 : 0.25
                                 )
                                 .scaleEffect(
-                                    selectedFlag == number || selectedFlag == -1 ? 1.0 : 0.8
+                                    viewModel.selectedFlag == number || viewModel.selectedFlag == -1 ? 1.0 : 0.8
                                 )
                         }
                     }
@@ -73,7 +65,7 @@ struct ContentView: View {
                 Spacer()
                 Spacer()
                 
-                Text("Score: \(score)")
+                Text("Score: \(viewModel.score)")
                     .font(.largeTitle.bold())
                     .foregroundStyle(.white)
                 
@@ -81,46 +73,16 @@ struct ContentView: View {
             }
             .padding()
         }
-        .alert(scoreTitle, isPresented: $showingScore) {
-            Button("Continue", action: askQuestion)
+        .alert(viewModel.scoreTitle, isPresented: $viewModel.showingScore) {
+            Button("Continue", action: viewModel.askQuestion)
         } message: {
-            Text("Your score is \(score)")
+            Text("Your score is \(viewModel.score)")
         }
-        .alert(scoreTitle, isPresented: $showingFinal) {
-            Button("Restart", action: restartQuestion)
+        .alert(viewModel.scoreTitle, isPresented: $viewModel.showingFinal) {
+            Button("Restart", action: viewModel.restartQuestion)
         } message: {
-            Text("Your final score is \(score)")
+            Text("Your final score is \(viewModel.score)")
         }
-    }
-    
-    private func flagTapped(_ number: Int) {
-        if number == correctAnswer {
-            scoreTitle = "Correct"
-            score += 1
-        } else {
-            scoreTitle = "Wrong! That’s the flag of \(countries[number])"
-            score -= 1
-        }
-                
-        questionCount += 1
-        
-        if questionCount == 3 {
-            showingFinal = true
-        } else {
-            showingScore = true
-        }
-    }
-    
-    private func askQuestion() {
-        countries.shuffle()
-        correctAnswer = Int.random(in: 0...2)
-        selectedFlag = -1
-    }
-    
-    private func restartQuestion() {
-        askQuestion()
-        questionCount = 0
-        score = 0
     }
 }
 
