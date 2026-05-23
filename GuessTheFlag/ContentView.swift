@@ -35,12 +35,8 @@ struct ContentView: View {
                             .font(.largeTitle.weight(.semibold))
                     }
                     
-                    ForEach(0..<3) { number in
+                    ForEach(0..<viewModel.numberOfFlags, id: \.self) { number in
                         Button {
-                            withAnimation {
-                                viewModel.selectedFlag = number
-                            }
-                            
                             viewModel.flagTapped(number)
                         } label: {
                             FlagImage(countryName: viewModel.countries[number])
@@ -54,6 +50,7 @@ struct ContentView: View {
                                 .scaleEffect(
                                     viewModel.selectedFlag == number || viewModel.selectedFlag == -1 ? 1.0 : 0.8
                                 )
+                                .animation(.default, value: viewModel.selectedFlag)
                         }
                     }
                 }
