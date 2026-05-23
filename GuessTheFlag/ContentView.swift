@@ -26,14 +26,7 @@ struct ContentView: View {
                 Spacer()
                 
                 VStack(spacing: 15) {
-                    VStack {
-                        Text("Tap the flag of")
-                            .foregroundStyle(.secondary)
-                            .font(.subheadline.weight(.heavy))
-                        
-                        Text(viewModel.countries[viewModel.correctAnswer])
-                            .font(.largeTitle.weight(.semibold))
-                    }
+                    QuestionHeaderView(country: viewModel.countries[viewModel.correctAnswer])
                     
                     ForEach(0..<viewModel.numberOfFlags, id: \.self) { number in
                         FlagButtonView(
