@@ -13,7 +13,7 @@ final class GuessTheFlagViewModel: ObservableObject {
     @Published private(set) var score = 0
     @Published private(set) var questionCount = 0
     @Published var showingFinal = false
-    @Published private(set) var selectedFlag = -1
+    @Published private(set) var selectedFlag: Int? = nil
     
     let numberOfFlags = 3
     let totalQuestions = 3
@@ -44,7 +44,7 @@ final class GuessTheFlagViewModel: ObservableObject {
     func askQuestion() {
         countries.shuffle()
         correctAnswer = Int.random(in: 0..<numberOfFlags)
-        selectedFlag = -1
+        selectedFlag = nil
     }
     
     func restartQuestion() {

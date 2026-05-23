@@ -36,23 +36,14 @@ struct ContentView: View {
                     }
                     
                     ForEach(0..<viewModel.numberOfFlags, id: \.self) { number in
-                        Button {
-                            viewModel.flagTapped(number)
-                        } label: {
-                            FlagImage(countryName: viewModel.countries[number])
-                                .rotation3DEffect(
-                                    .degrees(viewModel.selectedFlag == number ? 360 : 0 ),
-                                    axis: (x: 0, y: 1, z: 0)
-                                )
-                                .opacity(
-                                    viewModel.selectedFlag == number || viewModel.selectedFlag == -1 ? 1.0 : 0.25
-                                )
-                                .scaleEffect(
-                                    viewModel.selectedFlag == number || viewModel.selectedFlag == -1 ? 1.0 : 0.8
-                                )
-                                .animation(.default, value: viewModel.selectedFlag)
-                        }
+                        FlagButtonView(
+                            countryName: viewModel.countries[number],
+                            isSelected: viewModel.selectedFlag == number,
+                            isDefaultState: viewModel.selectedFlag == nil,
+                            action: { viewModel.flagTapped(number) }
+                        )
                     }
+                    .animation(.default, value: viewModel.selectedFlag)
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 20)
