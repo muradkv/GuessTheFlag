@@ -23,5 +23,5 @@ struct QuestionHeaderView: View {
 }
 
 #Preview {
-    QuestionHeaderView(country: "Russia")
+    QuestionHeaderView(country: Country.nameMock)
 }

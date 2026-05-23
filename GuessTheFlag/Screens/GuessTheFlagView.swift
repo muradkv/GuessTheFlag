@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct GuessTheFlagView: View {
     @StateObject private var viewModel = GuessTheFlagViewModel()
     
     var body: some View {
@@ -68,5 +68,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    GuessTheFlagView()
 }

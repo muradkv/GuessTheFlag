@@ -15,11 +15,16 @@ final class GuessTheFlagViewModel: ObservableObject {
     @Published var showingFinal = false
     @Published private(set) var selectedFlag: Int? = nil
     
+    @Published private(set) var countries: [String]
+    @Published private(set) var correctAnswer = 0
+    
     let numberOfFlags = 3
     let totalQuestions = 3
     
-    @Published private(set) var countries = ["Estonia", "France", "Germany", "Ireland", "Italy", "Nigeria", "Poland", "Spain", "UK", "US"].shuffled()
-    @Published private(set) var correctAnswer = Int.random(in: 0...2)
+    init(countries: [String] = Country.defaultList) {
+        self.countries = countries.shuffled()
+        askQuestion()
+    }
     
     func flagTapped(_ number: Int) {
         selectedFlag = number

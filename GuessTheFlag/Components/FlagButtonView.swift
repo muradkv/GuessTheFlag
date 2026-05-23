@@ -28,10 +28,10 @@ struct FlagButtonView: View {
 
 #Preview {
     VStack {
-        FlagButtonView(countryName: "US", isSelected: false, isDefaultState: false) {
+        FlagButtonView(countryName: Country.nameMock, isSelected: false, isDefaultState: false) {
         }
         
-        FlagButtonView(countryName: "US", isSelected: false, isDefaultState: true) {
+        FlagButtonView(countryName: Country.nameMock, isSelected: false, isDefaultState: true) {
         }
     }
 }
