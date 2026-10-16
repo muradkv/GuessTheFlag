@@ -14,5 +14,6 @@ struct FlagImage: View {
         Image(countryName)
             .clipShape(.capsule)
             .shadow(radius: 5)
+            .accessibilityLabel(Country.labels[countryName, default: "Unknown flag"])
     }
 }

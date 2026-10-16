@@ -19,6 +19,7 @@ struct QuestionHeaderView: View {
             Text(country)
                 .font(.largeTitle.weight(.semibold))
         }
+        .accessibilityElement(children: .combine)
     }
 }
 
